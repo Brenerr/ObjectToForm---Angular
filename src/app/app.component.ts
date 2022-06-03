@@ -48,8 +48,10 @@ export class AppComponent implements OnInit {
   };
 
   ngOnInit() {
-    let keys = Object.keys(this.automation);
-    this.listForm = this.toFormGroup(this.automation, keys);
+    this.listForm = this.toFormGroup(
+      this.automation,
+      Object.keys(this.automation)
+    );
 
     setTimeout(() => {
       console.log(this.listForm);
@@ -62,8 +64,7 @@ export class AppComponent implements OnInit {
       if (item[key] instanceof Array) {
         group[key] = this.toFormArray(item[key]);
       } else if (item[key] instanceof Object) {
-        let newKeys = Object.keys(item[key]);
-        group[key] = this.toFormGroup(item[key], newKeys);
+        group[key] = this.toFormGroup(item[key], Object.keys(item[key]));
       } else {
         group[key] = new FormControl(item[key], Validators.required);
       }
@@ -74,8 +75,7 @@ export class AppComponent implements OnInit {
   toFormArray(items: any[]) {
     let group = new FormArray([]);
     items.forEach((item) => {
-      let keys = Object.keys(item);
-      group.push(this.toFormGroup({ ...item }, keys));
+      group.push(this.toFormGroup({ ...item }, Object.keys(item)));
     });
     return group;
   }
