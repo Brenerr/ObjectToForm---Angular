@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
     description: 'Terceira Automacao',
     automationType: 'save-update',
     workspace: '60033a8fa7a9285e35925032',
-    table: '604977bafcf87e0013212c7c',
+    table: ['604977bafcf87e0013212c7c','604977bafcf87e0013212c7c'],
     event: {
       eventType: 'isUpdateFor',
       config: {
@@ -62,7 +62,8 @@ export class AppComponent implements OnInit {
     const group: any = {};
     keys.forEach((key) => {
       if (item[key] instanceof Array) {
-        group[key] = this.toFormArray(item[key]);
+        group[key] = (item[key][0] instanceof Object) ? 
+        this.toFormArray(item[key]) : new FormControl(item[key]);
       } else if (item[key] instanceof Object) {
         group[key] = this.toFormGroup(item[key], Object.keys(item[key]));
       } else {
