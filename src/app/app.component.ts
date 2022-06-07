@@ -62,8 +62,7 @@ export class AppComponent implements OnInit {
     const group: any = {};
     keys.forEach((key) => {
       if (item[key] instanceof Array) {
-        group[key] = (item[key][0] instanceof Object) ? 
-        this.toFormArray(item[key]) : new FormControl(item[key]);
+        group[key] =  this.toFormArray(item[key])
       } else if (item[key] instanceof Object) {
         group[key] = this.toFormGroup(item[key], Object.keys(item[key]));
       } else {
@@ -76,7 +75,11 @@ export class AppComponent implements OnInit {
   toFormArray(items: any[]) {
     let group = new FormArray([]);
     items.forEach((item) => {
-      group.push(this.toFormGroup({ ...item }, Object.keys(item)));
+      if(item instanceof Object) {
+        group.push(this.toFormGroup({ ...item }, Object.keys(item)));
+      } else {
+        group.push(new FormControl(item, Validators.required));
+      }
     });
     return group;
   }
